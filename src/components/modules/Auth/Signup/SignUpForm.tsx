@@ -1,5 +1,4 @@
 "use client";
-import loginBanner from "@/assets/login.png";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,18 +17,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { loginValidation } from "./login.validation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import signupBanner from "@/assets/signup.png";
 
-export default function LoginForm() {
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupValidation } from "./signup.validation";
+
+export default function SignUpForm() {
   const form = useForm({
-    resolver: zodResolver(loginValidation),
+    resolver: zodResolver(signupValidation),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
-      rememberMe: false,
+      confirmPassword: "",
     },
   });
 
@@ -46,8 +47,8 @@ export default function LoginForm() {
       {/* banner */}
       <div className="relative w-full lg:w-1/2 h-[300px] sm:h-[400px] lg:h-auto">
         <Image
-          src={loginBanner}
-          alt="Login Banner Image"
+          src={signupBanner}
+          alt="Signup Banner Image"
           fill
           className="object-cover"
           priority
@@ -58,14 +59,28 @@ export default function LoginForm() {
       <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-8 lg:px-20 py-10">
         <div className="w-full max-w-md">
           <div className="mb-6 text-center">
-            <h3 className="text-xl lg:text-4xl font-bold">Login</h3>
+            <h3 className="text-xl lg:text-4xl font-bold">Sign Up</h3>
             <p className="text-[#667085] text-base mt-2">
-              Welcome back, please enter your details to log in.
+              To Create Account, Please Fill in the From Below.
             </p>
           </div>
 
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter your full name" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="email"
@@ -101,37 +116,29 @@ export default function LoginForm() {
                 )}
               />
 
-              <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="rememberMe"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="mb-0 text-[#667085] font-normal">
-                        Remember Me
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-                <Link
-                  href="#"
-                  className="text-sm text-[#667085] hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Retype password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <Button
                 type="submit"
                 className="w-full mt-4 bg-[#60E5AE] cursor-pointer hover:bg-[#46C98C] text-[#1F1F1F] text-lg"
               >
-                {isSubmitting ? "Logging..." : "Login"}
+                {isSubmitting ? "Signing Up..." : "SignUp"}
               </Button>
             </form>
           </FormProvider>
@@ -144,12 +151,12 @@ export default function LoginForm() {
           </div>
 
           <p className="text-center text-sm text-[#667085]">
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/signUp"
+              href="/login"
               className="text-[#1F1F1F] font-bold hover:underline"
             >
-              Sign up
+              LogIn
             </Link>
           </p>
         </div>
