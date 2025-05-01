@@ -1,10 +1,57 @@
+"use client";
 import Image from "next/image";
 import { Fragment } from "react";
 import dashboardBanner from "@/assets/banner.png";
 import { FaRegClipboard } from "react-icons/fa";
 import spinnerIcon from "@/assets/spin.svg";
+import { Card, CardContent } from "@/components/ui/card";
+import { HiOutlineDocumentPlus } from "react-icons/hi2";
+import { FaSwatchbook } from "react-icons/fa";
+import { MdOutlineEditCalendar } from "react-icons/md";
+import { GoDotFill } from "react-icons/go";
+import { RiDeleteBinLine } from "react-icons/ri";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+
+const taskCategoryOptions = [
+  { value: "artsAndCraft", label: "Arts and Craft" },
+  { value: "nature", label: "Nature" },
+  { value: "family", label: "Family" },
+  { value: "sport", label: "Sport" },
+  { value: "friends", label: "Friends" },
+  { value: "meditation", label: "Meditation" },
+];
 
 export default function AllTaskPage() {
+  const form = useForm({
+    defaultValues: {
+      condition: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
+  };
+
   return (
     <Fragment>
       <div className="w-full h-[306px] relative">
@@ -75,6 +122,148 @@ export default function AllTaskPage() {
           </div>
         </div>
       </div>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <Card className="relative z-10 xl:w-[calc(100%-150px)] mx-auto shadow-xl border-2 border-red-500 -mt-15">
+            <CardContent>
+              <div className="flex justify-between">
+                {/* title */}
+                <div>
+                  <p className="text-2xl text-[#1F1F1F] font-bold">
+                    All Task List
+                  </p>
+                </div>
+
+                {/* dropdown */}
+                <div className="flex gap-5">
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="condition"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="w-full ">
+                                <SelectValue placeholder="Select Task Category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {taskCategoryOptions.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                  className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="condition"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select Task Category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {taskCategoryOptions.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                  className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* action button */}
+                  <div>
+                    <Button className="bg-[#60E5AE] hover:bg-[#46C98C] text-[#1F1F1F] cursor-pointer">
+                      <HiOutlineDocumentPlus />
+                      Add New Task
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* card */}
+              <div className="my-10">
+                <div className="grid grid-cols-4 gap-5">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Card key={index}>
+                      <CardContent className="space-y-8">
+                        {/* icon,title,action button */}
+                        <div className="flex justify-between">
+                          <div className="flex gap-4">
+                            <div className="bg-[#60E5AE] h-12 w-12 rounded-full flex items-center justify-center">
+                              <FaSwatchbook className="text-xl" />
+                            </div>
+                            <div>
+                              <p className="text-[#1F1F1F] font-bold text-xl">
+                                Art and Craft
+                              </p>
+                              <p className="text-[#667085] text-base mt-2">
+                                Select the role that you want to candidates for
+                                and upload your job description.
+                              </p>
+                            </div>
+                          </div>
+                          {/* action button */}
+                          <div>
+                            <RiDeleteBinLine className="text-2xl text-red-500" />
+                          </div>
+                        </div>
+                        {/* end date , status */}
+                        <div className="flex justify-between">
+                          <div className="flex gap-4">
+                            <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
+                            <p className="text-[#3B3B3B]  text-base font-medium">
+                              Friday, April 19 - 2024
+                            </p>
+                          </div>
+                          {/* status */}
+                          <div className="flex gap-2">
+                            <GoDotFill className="text-2xl text-[#E343E6] font-medium" />
+                            <p className="text-[#E343E6] text-base font-medium">
+                              Pending
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </form>
+      </FormProvider>
     </Fragment>
   );
 }
