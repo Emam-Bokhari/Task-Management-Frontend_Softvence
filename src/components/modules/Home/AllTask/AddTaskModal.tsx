@@ -58,9 +58,9 @@ export default function AddTaskModal() {
     defaultValues: {
       title: "",
       description: "",
-      category: "",
+      category: "nature",
       endDate: "",
-      status: "",
+      status: undefined,
     },
     resolver: zodResolver(taskValidation),
   });

@@ -12,19 +12,23 @@ export const taskValidation = z.object({
         .min(10, { message: 'Description must be at least 10 characters' })
         .nonempty({ message: 'Description is required' }),
 
-    category: z
-        .string()
-        .nonempty({ message: 'Category is required' })
-        .refine((val) => ['artsAndCraft', 'nature', 'family', 'sport', 'friends', 'meditation'].includes(val), {
-            message: 'Category must be one of: artsAndCraft, nature, family, sport, friends, meditation',
-        }),
+    category: z.enum([
+        'artsAndCraft',
+        'nature',
+        'family',
+        'sport',
+        'friends',
+        'meditation',
+    ], {
+        errorMap: () => ({ message: 'Category must be one of the allowed values' })
+    }),
 
     status: z
-        .string()
-        .optional()
-        .refine((val) => ['allTask', 'onGoing', 'inProgress', 'pending', 'collaborativeTask', 'done'].includes(val), {
-            message: 'Status must be one of: allTask, onGoing, inProgress, pending, collaborativeTask, done',
-        }),
+        .enum(['allTask', 'onGoing', 'inProgress', 'pending', 'collaborativeTask', 'done'])
+        .optional(),
+
+
+
 
     endDate: z
         .string()
