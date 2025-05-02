@@ -6,7 +6,7 @@ A beautifully designed and highly responsive **Task Management Application** bui
 
 ## 🚀 Live Demo
 
-🔗 [Click here to view the live site](https://your-deployed-link.com)
+🔗 [Click here to view the live site](https://task-management-frontend-softvence.vercel.app)
 
 ---
 
