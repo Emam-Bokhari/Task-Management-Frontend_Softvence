@@ -22,8 +22,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { loginValidation } from "./login.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "@/services/Auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(loginValidation),
     defaultValues: {
@@ -38,7 +42,20 @@ export default function LoginForm() {
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    console.log(data);
+    try {
+      const response = await loginUser(data);
+      console.log(response);
+
+      if (response?.success) {
+        toast.success(response?.message);
+
+        router.push("/");
+      } else {
+        toast.error(response.error[0]?.message);
+      }
+    } catch {
+      toast.error("Something went wring!");
+    }
   };
 
   return (
