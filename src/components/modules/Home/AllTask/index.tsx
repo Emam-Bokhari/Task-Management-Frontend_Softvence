@@ -114,12 +114,12 @@ export default function AllTask({
         />
 
         {/* overlay  */}
-        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10  lg:py-6  text-white  border-2 border-blue-500">
+        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10  lg:py-6  text-white  ">
           <div className="flex xl:items-center items-start justify-between">
             {/*  logo and nav */}
-            <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  border-2 border-red-500">
+            <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  ">
               {/* logo */}
-              <div className="flex flex-1  items-center gap-2 border-2 border-red-500">
+              <div className="flex flex-1  items-center gap-2">
                 <div className="w-6 h-6 bg-[#477368] bg-opacity-20 rounded-md flex items-center justify-center">
                   <span className="text-white text-2xl ">⏱️</span>
                 </div>
@@ -127,7 +127,7 @@ export default function AllTask({
               </div>
 
               {/* nav */}
-              <div className="flex  flex-col md:flex-row gap-2 md:gap-10 flex-1 text-sm border-2 border-blue-500">
+              <div className="flex  flex-col md:flex-row gap-2 md:gap-10 flex-1 text-sm ">
                 <div className="flex items-center gap-2 sm:w-auto w-full ">
                   <FaRegClipboard className="text-2xl text-[#60E5AE]" />
                   <span className="text-2xl lg:text-lg text-[#60E5AE]">
@@ -186,16 +186,16 @@ export default function AllTask({
         </div>
       </div>
 
-      <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl border-2 border-red-500 -mt-15">
+      <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl  -mt-15">
         <CardContent>
-          <div className="flex flex-col  gap-2 lg:gap-0 lg:flex-row lg:justify-between border-2 border-red-500">
+          <div className="flex flex-col  gap-2 lg:gap-0 lg:flex-row lg:justify-between ">
             {/* title */}
             <div>
               <p className="text-2xl text-[#1F1F1F] font-bold">All Task List</p>
             </div>
 
             {/* dropdown */}
-            <div className="border-2 border-red-500 flex flex-wrap gap-5">
+            <div className="flex flex-wrap gap-5">
               <FormProvider {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <div className="flex flex-wrap gap-5">
@@ -285,8 +285,8 @@ export default function AllTask({
                     <CardContent className="space-y-8">
                       {/* icon,title,action button */}
                       <div className="flex justify-between">
-                        <div className="flex  gap-4 border-2 border-red-500">
-                          <div className="bg-[#60E5AE] border-2 border-red-500 h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="flex  gap-4">
+                          <div className="bg-[#60E5AE]  h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0">
                             <FaSwatchbook size={24} />
                           </div>
                           <Link href={`/${task._id}`} className="block">
