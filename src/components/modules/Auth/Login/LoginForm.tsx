@@ -44,7 +44,6 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     try {
       const response = await loginUser(data);
-      console.log(response);
 
       if (response?.success) {
         toast.success(response?.message);

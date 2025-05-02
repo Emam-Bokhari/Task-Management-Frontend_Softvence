@@ -22,6 +22,14 @@ A beautifully designed and highly responsive **Task Management Application** bui
 
 ## 📸 Screenshots
 
+![Homepage Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746177061/tcbnjyesuzlswwippgbx.png)
+
+![Task Details Page Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746177060/zyq0sfaczczimn9uaczq.png)
+
+![Add Task Modal Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746177061/kd6rwgrcpze0wfgykklb.png)
+
+![Delete Task Modal Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746177061/ocaedcmz9v7fbwy5ksoc.png)
+
 ---
 
 ## 🔧 Features

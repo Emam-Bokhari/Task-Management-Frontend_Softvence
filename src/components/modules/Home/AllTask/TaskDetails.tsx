@@ -136,6 +136,10 @@ export default function TaskDetails({ task }: { task: TTask }) {
     }
   };
 
+  function handleBack() {
+    router.push("/");
+  }
+
   return (
     <Fragment>
       <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl  md:-mt-15 -mt-6">
@@ -155,7 +159,11 @@ export default function TaskDetails({ task }: { task: TTask }) {
                   Edit Task
                 </Button>
               )}
-              <Button className="bg-[#60E5AE] hover:bg-[#46C98C]  text-lg text-[#1F1F1F] cursor-pointer">
+
+              <Button
+                onClick={handleBack}
+                className="bg-[#60E5AE] hover:bg-[#46C98C]  text-lg text-[#1F1F1F] cursor-pointer"
+              >
                 Back
               </Button>
             </div>
