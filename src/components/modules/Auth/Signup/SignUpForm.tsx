@@ -22,8 +22,12 @@ import signupBanner from "@/assets/signup.png";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupValidation } from "./signup.validation";
+import { registerUser } from "@/services/Auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(signupValidation),
     defaultValues: {
@@ -39,7 +43,19 @@ export default function SignUpForm() {
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    console.log(data);
+    try {
+      const response = await registerUser(data);
+      console.log(response);
+
+      if (response?.success) {
+        toast.success(response?.message);
+        router.push("/login");
+      } else {
+        toast.error(response?.error[0]?.message);
+      }
+    } catch {
+      toast.error("Something went wrong!");
+    }
   };
 
   return (

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 import { Poppins } from "next/font/google";
 
@@ -25,6 +26,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppinsClassName}  bg-[#FAFAFA] antialiased`}>
         {children}
+        <Toaster
+          expand
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "#60E5AE",
+              color: "#000000",
+            },
+          }}
+        />
       </body>
     </html>
   );

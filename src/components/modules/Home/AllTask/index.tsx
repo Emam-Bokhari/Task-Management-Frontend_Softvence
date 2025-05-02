@@ -20,7 +20,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -41,7 +40,15 @@ const taskCategoryOptions = [
   { value: "meditation", label: "Meditation" },
 ];
 
-export default function AllTaskPage() {
+const taskStatusOptions = [
+  { value: "allTask", label: "All Task" },
+  { value: "onGoing", label: "On Going" },
+  { value: "pending", label: "Pending" },
+  { value: "collaborativeTask", label: "Collaborative Task" },
+  { value: "done", label: "Done" },
+];
+
+export default function AllTask() {
   const form = useForm({
     defaultValues: {
       condition: "",
@@ -64,7 +71,7 @@ export default function AllTaskPage() {
         />
 
         {/* overlay  */}
-        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10 px-6 lg:py-6 py-4 text-white  border-2 border-blue-500">
+        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10  lg:py-6  text-white  border-2 border-blue-500">
           <div className="flex xl:items-center items-start justify-between">
             {/*  logo and nav */}
             <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  border-2 border-red-500">
@@ -112,21 +119,22 @@ export default function AllTaskPage() {
             </div>
           </div>
 
-          <div className="absolute xl:left-20 lg:left-16 md:left-10 left-6 md:top-1/2 transform -translate-y-1/2 top-[60%]">
+          <div className="absolute xl:left-20 lg:left-16 md:left-10  md:top-1/2 transform -translate-y-1/2 top-[60%]">
             <h3 className="text-[#60E5AE] text-lg font-medium">
               Hi, Moshfiqur Rahman
             </h3>
-            <p className="text-white xl:text-4xl lg:text-3xl md:text-2xl text-xl font-bold mt-2 sm:mt-4">
+            <p className="text-white xl:text-4xl lg:text-3xl md:text-2xl text-xl font-bold mt-2 ">
               Welcome to Dashboard
             </p>
           </div>
         </div>
       </div>
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Card className="relative z-10 xl:w-[calc(100%-150px)] mx-auto shadow-xl border-2 border-red-500 -mt-15">
-            <CardContent>
-              <div className="flex justify-between">
+
+      <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl border-2 border-red-500 -mt-15">
+        <CardContent>
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="flex flex-col  gap-2 lg:gap-0 lg:flex-row lg:justify-between">
                 {/* title */}
                 <div>
                   <p className="text-2xl text-[#1F1F1F] font-bold">
@@ -135,7 +143,7 @@ export default function AllTaskPage() {
                 </div>
 
                 {/* dropdown */}
-                <div className="flex gap-5">
+                <div className="flex flex-wrap gap-5">
                   <div>
                     <FormField
                       control={form.control}
@@ -181,11 +189,11 @@ export default function AllTaskPage() {
                           >
                             <FormControl>
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select Task Category" />
+                                <SelectValue placeholder="Select Task Status" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {taskCategoryOptions.map((option) => (
+                              {taskStatusOptions.map((option) => (
                                 <SelectItem
                                   key={option.value}
                                   value={option.value}
@@ -211,59 +219,58 @@ export default function AllTaskPage() {
                   </div>
                 </div>
               </div>
-
-              {/* card */}
-              <div className="my-10">
-                <div className="grid grid-cols-4 gap-5">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <Card key={index}>
-                      <CardContent className="space-y-8">
-                        {/* icon,title,action button */}
-                        <div className="flex justify-between">
-                          <div className="flex gap-4">
-                            <div className="bg-[#60E5AE] h-12 w-12 rounded-full flex items-center justify-center">
-                              <FaSwatchbook className="text-xl" />
-                            </div>
-                            <div>
-                              <p className="text-[#1F1F1F] font-bold text-xl">
-                                Art and Craft
-                              </p>
-                              <p className="text-[#667085] text-base mt-2">
-                                Select the role that you want to candidates for
-                                and upload your job description.
-                              </p>
-                            </div>
-                          </div>
-                          {/* action button */}
-                          <div>
-                            <RiDeleteBinLine className="text-2xl text-red-500" />
-                          </div>
+            </form>
+          </FormProvider>
+          {/* card */}
+          <div className="my-10">
+            <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Card key={index}>
+                  <CardContent className="space-y-8">
+                    {/* icon,title,action button */}
+                    <div className="flex justify-between">
+                      <div className="flex gap-4">
+                        <div className="bg-[#60E5AE] h-12 w-12 rounded-full flex items-center justify-center">
+                          <FaSwatchbook className="text-xl" />
                         </div>
-                        {/* end date , status */}
-                        <div className="flex justify-between">
-                          <div className="flex gap-4">
-                            <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
-                            <p className="text-[#3B3B3B]  text-base font-medium">
-                              Friday, April 19 - 2024
-                            </p>
-                          </div>
-                          {/* status */}
-                          <div className="flex gap-2">
-                            <GoDotFill className="text-2xl text-[#E343E6] font-medium" />
-                            <p className="text-[#E343E6] text-base font-medium">
-                              Pending
-                            </p>
-                          </div>
+                        <div>
+                          <p className="text-[#1F1F1F] font-bold text-xl">
+                            Art and Craft
+                          </p>
+                          <p className="text-[#667085] text-base mt-2">
+                            Select the role that you want to candidates for and
+                            upload your job description.
+                          </p>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </form>
-      </FormProvider>
+                      </div>
+                      {/* action button */}
+                      <div>
+                        <RiDeleteBinLine className="text-2xl text-red-500" />
+                      </div>
+                    </div>
+                    {/* end date , status */}
+                    <div className="flex justify-between">
+                      <div className="flex gap-4">
+                        <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
+                        <p className="text-[#3B3B3B]  text-base font-medium">
+                          Friday, April 19 - 2024
+                        </p>
+                      </div>
+                      {/* status */}
+                      <div className="flex gap-2">
+                        <GoDotFill className="text-2xl text-[#E343E6] font-medium" />
+                        <p className="text-[#E343E6] text-base font-medium">
+                          Pending
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </Fragment>
   );
 }
