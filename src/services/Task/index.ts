@@ -92,7 +92,7 @@ export const updateTaskStatusById = async (id: string, status: any) => {
     try {
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/tasks/${id}/status`, {
-            method: "PATCH",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": (await cookies()).get("accessToken")!.value,

@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { TTask } from "@/types";
 import { Fragment } from "react";
 import {
   FieldValues,
@@ -25,6 +26,19 @@ import {
 import { FaSwatchbook } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { MdOutlineEditCalendar } from "react-icons/md";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import confirmDeleteImage from "@/assets/confirmDelete.png";
+import Image from "next/image";
+import { useState } from "react";
+import { deleteTaskById, updateTaskStatusById } from "@/services/Task";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const taskStatusOptions = [
   { value: "allTask", label: "All Task" },
@@ -34,31 +48,113 @@ const taskStatusOptions = [
   { value: "done", label: "Done" },
 ];
 
-export default function TaskDetails() {
+function ConfirmDeleteModal({ onConfirm }: { onConfirm: () => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-[#F5DBD5] hover:bg-[#eec9c0] cursor-pointer text-red-500 text-lg">
+          Delete Task
+        </Button>
+      </DialogTrigger>
+      <DialogTitle className="sr-only">Confirm Delete</DialogTitle>
+      <DialogContent>
+        <div className="flex justify-center space-y-3">
+          <div className="space-y-3">
+            <div className="flex justify-center">
+              <Image
+                width={300}
+                height={300}
+                src={confirmDeleteImage}
+                alt="Confirm Delete Image"
+              />
+            </div>
+            <p className="text-2xl font-bold text-[#1F1F1F] text-center">
+              Are You Sure!!
+            </p>
+            <p className="text-base text-[#667085] text-center">
+              Do you want to delete this Task on this app?
+            </p>
+            <div className="flex gap-5 justify-center">
+              <Button
+                onClick={() => {
+                  onConfirm();
+                  setOpen(false);
+                }}
+                className="bg-[#60E5AE] hover:bg-[#46C98C] cursor-pointer text-[#1F1F1F] font-bold"
+              >
+                Yes
+              </Button>
+              <Button
+                onClick={() => setOpen(false)}
+                className="bg-[#F5DBD5] hover:bg-[#eec9c0] cursor-pointer text-red-500 font-bold"
+              >
+                No
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function TaskDetails({ task }: { task: TTask }) {
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       status: "",
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+  // delete a task
+  const handleDeleteTask = async (id: string) => {
+    try {
+      const response = await deleteTaskById(id);
+      if (response?.success) {
+        toast.success("Task deleted successfully");
+        router.push("/");
+      } else {
+        toast.error(response.error[0]?.message);
+      }
+    } catch {
+      toast.error("Something went wrong!");
+    }
   };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const response = await updateTaskStatusById(task._id, data);
+
+      if (response?.success) {
+        toast.success(response?.message);
+      } else {
+        toast.error(response.error[0]?.message);
+      }
+    } catch {
+      toast.error("Something went wring!");
+    }
+  };
+
   return (
     <Fragment>
       <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl border-2 border-red-500 md:-mt-15 -mt-6">
         <CardContent>
           <div className="flex flex-col md:flex-row gap-3 md:gap-0  md:justify-between">
-            {/* title */}
+            {/* heading */}
             <div>
               <p className="text-2xl text-[#1F1F1F] font-bold">All Task List</p>
             </div>
 
             {/* action buttons */}
-            <div className="flex gap-5 justify-end">
-              <Button className="bg-[#F7E4C9] hover:bg-[#F3D1A1]  text-lg text-[#FFAB00] cursor-pointer">
-                Edit Task
-              </Button>
+            <div className="flex gap-5 items-center justify-end">
+              {task.status === "done" ? (
+                <p className="text-[#E343E6] font-bold text-lg">20 Points</p>
+              ) : (
+                <Button className="bg-[#F7E4C9] hover:bg-[#F3D1A1]  text-lg text-[#FFAB00] cursor-pointer">
+                  Edit Task
+                </Button>
+              )}
               <Button className="bg-[#60E5AE] hover:bg-[#46C98C]  text-lg text-[#1F1F1F] cursor-pointer">
                 Back
               </Button>
@@ -67,7 +163,7 @@ export default function TaskDetails() {
           {/* separator */}
           <Separator className="border-2 mt-8" />
           {/* text */}
-          <div>
+          <div className="mt-8">
             {/* form start */}
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -75,25 +171,14 @@ export default function TaskDetails() {
                   <div className="bg-[#60E5AE] border-2 border-red-500 xl:h-20 h-12 xl:w-20 w-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <FaSwatchbook className="xl:w-10 xl:h-10 w-6 h-6" />
                   </div>
-                  <div className="space-y-16">
+                  <div className="space-y-16 w-full">
                     {/* title and description */}
                     <div>
                       <p className="text-[#1F1F1F] font-bold xl:text-3xl lg:text-2xl text-xl capitalize">
-                        Task Craft
+                        {task.title}
                       </p>
-                      <p className="text-[#667085] text-base mt-2">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Porro nostrum fugit nihil at natus, repellat
-                        quibusdam itaque atque! Adipisci illo exercitationem
-                        sint explicabo dolorem soluta ipsam tempore nobis
-                        temporibus rerum.s Lorem ipsum dolor, sit amet
-                        consectetur adipisicing elit. Ea et incidunt dolor
-                        labore molestiae rem quibusdam laboriosam quaerat porro
-                        aliquid eum voluptas error, fugiat libero itaque
-                        quisquam omnis quasi ab cum. Corporis dignissimos
-                        eveniet cumque dolor totam, illo temporibus illum
-                        veritatis officiis delectus? Deserunt similique quasi
-                        magni, illo veritatis nostrum.
+                      <p className="text-[#667085] text-base mt-2 ">
+                        {task.description}
                       </p>
                     </div>
                     {/* date and status */}
@@ -105,7 +190,7 @@ export default function TaskDetails() {
                         <div className="flex gap-4 mt-3">
                           <MdOutlineEditCalendar className="text-2xl text-[#1F1F1F] font-medium" />
                           <p className="text-[#1F1F1F]  text-base font-medium">
-                            Friday, April-25,2025
+                            {task.endDate}
                           </p>
                         </div>
                       </div>
@@ -116,13 +201,37 @@ export default function TaskDetails() {
                         <div className="flex gap-2">
                           <GoDotFill
                             className={`text-2xl font-medium 
-                        }`}
+                                ${
+                                  task.status === "collaborativeTask"
+                                    ? "text-blue-500"
+                                    : task.status === "done"
+                                    ? "text-[#60E5AE]"
+                                    : task.status === "inProgress"
+                                    ? "text-[#DF992F]"
+                                    : task.status === "pending"
+                                    ? "text-[#E343E6]"
+                                    : task.status === "onGoing"
+                                    ? "text-[#FFA500]"
+                                    : "text-gray-500"
+                                }`}
                           />
                           <p
                             className={`xl:text-3xl lg:text-2xl text-xl font-medium capitalize 
-                        }`}
+                                ${
+                                  task.status === "collaborativeTask"
+                                    ? "text-blue-500"
+                                    : task.status === "done"
+                                    ? "text-[#60E5AE]"
+                                    : task.status === "inProgress"
+                                    ? "text-[#DF992F]"
+                                    : task.status === "pending"
+                                    ? "text-[#E343E6]"
+                                    : task.status === "onGoing"
+                                    ? "text-[#FFA500]"
+                                    : "text-gray-500"
+                                }`}
                           >
-                            inProgress
+                            {task.status}
                           </p>
                         </div>
                       </div>
@@ -167,10 +276,10 @@ export default function TaskDetails() {
                       </div>
                     </div>
                     {/* task actions */}
-                    <div className="flex gap-5 justify-end mt-20">
-                      <Button className="bg-[#F5DBD5] hover:bg-[#eec9c0] cursor-pointer text-red-500 text-lg">
-                        Delete Task
-                      </Button>
+                    <div className="flex w-full gap-5 justify-end mt-20 border-2 border-red-500">
+                      <ConfirmDeleteModal
+                        onConfirm={() => handleDeleteTask(task._id)}
+                      />
                       <Button className="bg-[#60E5AE] hover:bg-[#46C98C] cursor-pointer text-[#1F1F1F] text-lg ">
                         Submit
                       </Button>

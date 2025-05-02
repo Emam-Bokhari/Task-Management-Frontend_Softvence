@@ -44,6 +44,7 @@ import NoTaskFound from "./NoTaskFound";
 import { deleteTaskById } from "@/services/Task";
 import { toast } from "sonner";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
+import Link from "next/link";
 
 const taskCategoryOptions = [
   { value: "artsAndCraft", label: "Arts and Craft" },
@@ -291,14 +292,17 @@ export default function AllTask({
                           <div className="bg-[#60E5AE] border-2 border-red-500 h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0">
                             <FaSwatchbook size={24} />
                           </div>
-                          <div>
-                            <p className="text-[#1F1F1F] font-bold text-xl capitalize">
-                              {task.title}
-                            </p>
-                            <p className="text-[#667085] text-base mt-2">
-                              {task.description}
-                            </p>
-                          </div>
+                          <Link href={`/${task._id}`} className="block">
+                            <div>
+                              <p className="text-[#1F1F1F] font-bold text-xl capitalize">
+                                {task.title}
+                              </p>
+                              <p className="text-[#667085] text-base mt-2">
+                                {task.description?.slice(0, 70)}
+                                {task.description?.length > 70 && "..."}
+                              </p>
+                            </div>
+                          </Link>
                         </div>
                         {/* action button */}
                         <ConfirmDeleteModal
