@@ -15,6 +15,7 @@ import { LogOutIcon } from "lucide-react";
 import { logoutFromCookie } from "@/services/Auth";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/types";
+import Link from "next/link";
 
 export default function CommonBanner({ user }: { user: IUser }) {
   const router = useRouter();
@@ -42,11 +43,14 @@ export default function CommonBanner({ user }: { user: IUser }) {
             {/*  logo and nav */}
             <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  border-2 border-red-500">
               {/* logo */}
+
               <div className="flex flex-1  items-center gap-2 border-2 border-red-500">
                 <div className="w-6 h-6 bg-[#477368] bg-opacity-20 rounded-md flex items-center justify-center">
                   <span className="text-white text-2xl ">⏱️</span>
                 </div>
-                <span className="text-2xl lg:text-lg font-semibold">Tasko</span>
+                <span className="text-2xl lg:text-lg font-semibold">
+                  <Link href="/">Tasko</Link>
+                </span>
               </div>
 
               {/* nav */}

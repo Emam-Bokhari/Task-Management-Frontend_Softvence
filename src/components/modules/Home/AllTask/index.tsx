@@ -5,7 +5,6 @@ import dashboardBanner from "@/assets/banner.png";
 import { FaRegClipboard } from "react-icons/fa";
 import spinnerIcon from "@/assets/spin.svg";
 import { Card, CardContent } from "@/components/ui/card";
-import { HiOutlineDocumentPlus } from "react-icons/hi2";
 import { FaSwatchbook } from "react-icons/fa";
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
@@ -29,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+
 import { IUser, TTask } from "@/types";
 import {
   DropdownMenu,
@@ -45,6 +44,7 @@ import { deleteTaskById } from "@/services/Task";
 import { toast } from "sonner";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import Link from "next/link";
+import AddTaskModal from "./AddTaskModal";
 
 const taskCategoryOptions = [
   { value: "artsAndCraft", label: "Arts and Craft" },
@@ -188,95 +188,92 @@ export default function AllTask({
 
       <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl border-2 border-red-500 -mt-15">
         <CardContent>
-          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col  gap-2 lg:gap-0 lg:flex-row lg:justify-between">
-                {/* title */}
-                <div>
-                  <p className="text-2xl text-[#1F1F1F] font-bold">
-                    All Task List
-                  </p>
-                </div>
+          <div className="flex flex-col  gap-2 lg:gap-0 lg:flex-row lg:justify-between border-2 border-red-500">
+            {/* title */}
+            <div>
+              <p className="text-2xl text-[#1F1F1F] font-bold">All Task List</p>
+            </div>
 
-                {/* dropdown */}
-                <div className="flex flex-wrap gap-5">
-                  <div>
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="w-full ">
-                                <SelectValue placeholder="Select Task Category" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {taskCategoryOptions.map((option) => (
-                                <SelectItem
-                                  key={option.value}
-                                  value={option.value}
-                                  className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+            {/* dropdown */}
+            <div className="border-2 border-red-500 flex flex-wrap gap-5">
+              <FormProvider {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="flex flex-wrap gap-5">
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="w-full ">
+                                  <SelectValue placeholder="Select Task Category" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {taskCategoryOptions.map((option) => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                    className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                  <div>
-                    <FormField
-                      control={form.control}
-                      name="status"
-                      render={({ field }) => (
-                        <FormItem>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select Task Status" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {taskStatusOptions.map((option) => (
-                                <SelectItem
-                                  key={option.value}
-                                  value={option.value}
-                                  className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select Task Status" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {taskStatusOptions.map((option) => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                    className="hover:bg-[#E7FBF3] focus:bg-[#E7FBF3]"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
-
-                  {/* action button */}
-                  <div>
-                    <Button className="bg-[#60E5AE] hover:bg-[#46C98C] text-[#1F1F1F] cursor-pointer">
-                      <HiOutlineDocumentPlus />
-                      Add New Task
-                    </Button>
-                  </div>
-                </div>
+                </form>
+              </FormProvider>
+              {/* action button */}
+              <div>
+                <AddTaskModal />
               </div>
-            </form>
-          </FormProvider>
+            </div>
+          </div>
+
           {/* card */}
           <div className="my-10">
             {tasks === undefined ? (
@@ -310,7 +307,7 @@ export default function AllTask({
                         />
                       </div>
                       {/* end date , status */}
-                      <div className="flex justify-between">
+                      <div className="flex sm:flex-row flex-col sm:gap-0 gap-3 sm:justify-between">
                         <div className="flex gap-4">
                           <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
                           <p className="text-[#3B3B3B]  text-base font-medium">

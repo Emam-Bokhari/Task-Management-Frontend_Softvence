@@ -143,7 +143,7 @@ export default function TaskDetails({ task }: { task: TTask }) {
           <div className="flex flex-col md:flex-row gap-3 md:gap-0  md:justify-between">
             {/* heading */}
             <div>
-              <p className="text-2xl text-[#1F1F1F] font-bold">All Task List</p>
+              <p className="text-2xl text-[#1F1F1F] font-bold">Task Details</p>
             </div>
 
             {/* action buttons */}
