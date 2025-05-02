@@ -10,6 +10,7 @@ import { FaSwatchbook } from "react-icons/fa";
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { RiDeleteBinLine } from "react-icons/ri";
+import profileIcon from "@/assets/user.png";
 import {
   FieldValues,
   FormProvider,
@@ -30,6 +31,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { TTask } from "@/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOutIcon } from "lucide-react";
+import { logoutFromCookie } from "@/services/Auth";
+import { useRouter } from "next/navigation";
+import NoTaskFound from "./NoTaskFound";
 
 const taskCategoryOptions = [
   { value: "artsAndCraft", label: "Arts and Craft" },
@@ -48,7 +60,8 @@ const taskStatusOptions = [
   { value: "done", label: "Done" },
 ];
 
-export default function AllTask() {
+export default function AllTask({ tasks, user }: { tasks: TTask[] }) {
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       condition: "",
@@ -57,6 +70,11 @@ export default function AllTask() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
+  };
+
+  const handleLogout = async () => {
+    await logoutFromCookie();
+    router.push("/login");
   };
 
   return (
@@ -105,23 +123,36 @@ export default function AllTask() {
 
             {/* profile */}
             <div className="flex flex-1 items-center justify-end gap-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white relative">
-                <Image
-                  src="https://rb.gy/m9b6ro"
-                  alt="Profile"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="cursor-pointer">
+                  <div className="w-8 h-8 rounded-full overflow-hidden relative">
+                    <Image
+                      src={profileIcon}
+                      alt="Profile"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <span className="flex gap-2 items-center text-base cursor-pointer">
+                      <LogOutIcon className="w-6 h-6" />
+                      Logout
+                    </span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <span className="text-xl md:text-lg text-white font-medium">
-                Thomas M.
+                {user.name}
               </span>
             </div>
           </div>
 
           <div className="absolute xl:left-20 lg:left-16 md:left-10  md:top-1/2 transform -translate-y-1/2 top-[60%]">
             <h3 className="text-[#60E5AE] text-lg font-medium">
-              Hi, Moshfiqur Rahman
+              Hi, {user.name}
             </h3>
             <p className="text-white xl:text-4xl lg:text-3xl md:text-2xl text-xl font-bold mt-2 ">
               Welcome to Dashboard
@@ -223,51 +254,82 @@ export default function AllTask() {
           </FormProvider>
           {/* card */}
           <div className="my-10">
-            <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Card key={index}>
-                  <CardContent className="space-y-8">
-                    {/* icon,title,action button */}
-                    <div className="flex justify-between">
-                      <div className="flex gap-4">
-                        <div className="bg-[#60E5AE] h-12 w-12 rounded-full flex items-center justify-center">
-                          <FaSwatchbook className="text-xl" />
+            {tasks === undefined ? (
+              <NoTaskFound />
+            ) : (
+              <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
+                {tasks?.map((task) => (
+                  <Card key={task._id}>
+                    <CardContent className="space-y-8">
+                      {/* icon,title,action button */}
+                      <div className="flex justify-between">
+                        <div className="flex  gap-4 border-2 border-red-500">
+                          <div className="bg-[#60E5AE] border-2 border-red-500 h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0">
+                            <FaSwatchbook size={24} />
+                          </div>
+                          <div>
+                            <p className="text-[#1F1F1F] font-bold text-xl capitalize">
+                              {task.title}
+                            </p>
+                            <p className="text-[#667085] text-base mt-2">
+                              {task.description}
+                            </p>
+                          </div>
                         </div>
+                        {/* action button */}
                         <div>
-                          <p className="text-[#1F1F1F] font-bold text-xl">
-                            Art and Craft
+                          <RiDeleteBinLine className="text-2xl text-red-500" />
+                        </div>
+                      </div>
+                      {/* end date , status */}
+                      <div className="flex justify-between">
+                        <div className="flex gap-4">
+                          <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
+                          <p className="text-[#3B3B3B]  text-base font-medium">
+                            {task.endDate}
                           </p>
-                          <p className="text-[#667085] text-base mt-2">
-                            Select the role that you want to candidates for and
-                            upload your job description.
+                        </div>
+                        {/* status */}
+                        <div className="flex gap-2">
+                          <GoDotFill
+                            className={`text-2xl font-medium ${
+                              task.status === "collaborativeTask"
+                                ? "text-blue-500"
+                                : task.status === "done"
+                                ? "text-[#60E5AE]"
+                                : task.status === "inProgress"
+                                ? "text-[#DF992F]"
+                                : task.status === "pending"
+                                ? "text-[#E343E6]"
+                                : task.status === "onGoing"
+                                ? "text-[#FFA500]"
+                                : "text-gray-500"
+                            }`}
+                          />
+                          <p
+                            className={`text-base font-medium capitalize ${
+                              task.status === "collaborativeTask"
+                                ? "text-blue-500"
+                                : task.status === "done"
+                                ? "text-[#60E5AE]"
+                                : task.status === "inProgress"
+                                ? "text-[#DF992F]"
+                                : task.status === "pending"
+                                ? "text-[#E343E6]"
+                                : task.status === "onGoing"
+                                ? "text-[#FFA500]"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {task.status}
                           </p>
                         </div>
                       </div>
-                      {/* action button */}
-                      <div>
-                        <RiDeleteBinLine className="text-2xl text-red-500" />
-                      </div>
-                    </div>
-                    {/* end date , status */}
-                    <div className="flex justify-between">
-                      <div className="flex gap-4">
-                        <MdOutlineEditCalendar className="text-2xl text-[#3B3B3B] font-medium" />
-                        <p className="text-[#3B3B3B]  text-base font-medium">
-                          Friday, April 19 - 2024
-                        </p>
-                      </div>
-                      {/* status */}
-                      <div className="flex gap-2">
-                        <GoDotFill className="text-2xl text-[#E343E6] font-medium" />
-                        <p className="text-[#E343E6] text-base font-medium">
-                          Pending
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
