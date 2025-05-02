@@ -9,7 +9,6 @@ import { HiOutlineDocumentPlus } from "react-icons/hi2";
 import { FaSwatchbook } from "react-icons/fa";
 import { MdOutlineEditCalendar } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
-import { RiDeleteBinLine } from "react-icons/ri";
 import profileIcon from "@/assets/user.png";
 import {
   FieldValues,
@@ -31,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { TTask } from "@/types";
+import { IUser, TTask } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +41,9 @@ import { LogOutIcon } from "lucide-react";
 import { logoutFromCookie } from "@/services/Auth";
 import { useRouter } from "next/navigation";
 import NoTaskFound from "./NoTaskFound";
+import { deleteTaskById } from "@/services/Task";
+import { toast } from "sonner";
+import ConfirmDeleteModal from "../ConfirmDeleteModal";
 
 const taskCategoryOptions = [
   { value: "artsAndCraft", label: "Arts and Craft" },
@@ -60,7 +62,13 @@ const taskStatusOptions = [
   { value: "done", label: "Done" },
 ];
 
-export default function AllTask({ tasks, user }: { tasks: TTask[] }) {
+export default function AllTask({
+  tasks,
+  user,
+}: {
+  tasks: TTask[];
+  user: IUser;
+}) {
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -72,9 +80,24 @@ export default function AllTask({ tasks, user }: { tasks: TTask[] }) {
     console.log(data);
   };
 
+  // logout
   const handleLogout = async () => {
     await logoutFromCookie();
     router.push("/login");
+  };
+
+  // delete a task
+  const handleDeleteTask = async (id: string) => {
+    try {
+      const response = await deleteTaskById(id);
+      if (response?.success) {
+        toast.success("Task deleted successfully");
+      } else {
+        toast.error(response.error[0]?.message);
+      }
+    } catch {
+      toast.error("Something went wrong!");
+    }
   };
 
   return (
@@ -277,9 +300,9 @@ export default function AllTask({ tasks, user }: { tasks: TTask[] }) {
                           </div>
                         </div>
                         {/* action button */}
-                        <div>
-                          <RiDeleteBinLine className="text-2xl text-red-500" />
-                        </div>
+                        <ConfirmDeleteModal
+                          onConfirm={() => handleDeleteTask(task._id)}
+                        />
                       </div>
                       {/* end date , status */}
                       <div className="flex justify-between">
