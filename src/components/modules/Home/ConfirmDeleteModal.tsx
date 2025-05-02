@@ -20,8 +20,8 @@ export default function ConfirmDeleteModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="cursor-pointer">
-          <RiDeleteBinLine className="text-2xl text-red-500" />
+        <div className="cursor-pointer h-6">
+          <RiDeleteBinLine size={24} className=" text-red-500" />
         </div>
       </DialogTrigger>
       <DialogTitle className="sr-only">Confirm Delete</DialogTitle>
