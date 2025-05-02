@@ -30,6 +30,8 @@ A beautifully designed and highly responsive **Task Management Application** bui
 
 ![Delete Task Modal Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746177061/ocaedcmz9v7fbwy5ksoc.png)
 
+![No Task Found Screenshot](https://res.cloudinary.com/dvpqm6zct/image/upload/v1746178019/mbj3qlwd93h0hxhjusns.png)
+
 ---
 
 ## 🔧 Features
