@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import AllTask from "@/components/modules/Home/AllTask";
 import { getCurrentUser } from "@/services/Auth";
 import { getTaskByUser } from "@/services/Task";

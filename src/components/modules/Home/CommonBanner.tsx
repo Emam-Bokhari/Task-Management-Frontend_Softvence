@@ -38,13 +38,13 @@ export default function CommonBanner({ user }: { user: IUser }) {
         />
 
         {/* overlay  */}
-        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10  lg:py-6  text-white  border-2 border-blue-500">
+        <div className="absolute inset-0 xl:px-20 lg:px-16 md:px-10  lg:py-6  text-white ">
           <div className="flex xl:items-center items-start justify-between">
             {/*  logo and nav */}
-            <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  border-2 border-red-500">
+            <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row lg:flex-1 lg:items-center lg:justify-between  ">
               {/* logo */}
 
-              <div className="flex flex-1  items-center gap-2 border-2 border-red-500">
+              <div className="flex flex-1  items-center gap-2 ">
                 <div className="w-6 h-6 bg-[#477368] bg-opacity-20 rounded-md flex items-center justify-center">
                   <span className="text-white text-2xl ">⏱️</span>
                 </div>
@@ -54,7 +54,7 @@ export default function CommonBanner({ user }: { user: IUser }) {
               </div>
 
               {/* nav */}
-              <div className="flex  flex-col md:flex-row gap-2 md:gap-10 flex-1 text-sm border-2 border-blue-500">
+              <div className="flex  flex-col md:flex-row gap-2 md:gap-10 flex-1 text-sm ">
                 <div className="flex items-center gap-2 sm:w-auto w-full ">
                   <FaRegClipboard className="text-2xl text-[#60E5AE]" />
                   <span className="text-2xl lg:text-lg text-[#60E5AE]">

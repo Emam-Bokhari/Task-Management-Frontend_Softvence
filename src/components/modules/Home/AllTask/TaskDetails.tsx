@@ -138,7 +138,7 @@ export default function TaskDetails({ task }: { task: TTask }) {
 
   return (
     <Fragment>
-      <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl border-2 border-red-500 md:-mt-15 -mt-6">
+      <Card className="relative z-10 xl:w-[calc(100%-150px)] lg:w-[calc(100%-125px)] md:w-[calc(100%-94px)] mx-auto shadow-xl  md:-mt-15 -mt-6">
         <CardContent>
           <div className="flex flex-col md:flex-row gap-3 md:gap-0  md:justify-between">
             {/* heading */}
@@ -167,8 +167,8 @@ export default function TaskDetails({ task }: { task: TTask }) {
             {/* form start */}
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="flex  gap-4 border-2 border-red-500">
-                  <div className="bg-[#60E5AE] border-2 border-red-500 xl:h-20 h-12 xl:w-20 w-12 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="flex  gap-4 ">
+                  <div className="bg-[#60E5AE]  xl:h-20 h-12 xl:w-20 w-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <FaSwatchbook className="xl:w-10 xl:h-10 w-6 h-6" />
                   </div>
                   <div className="space-y-16 w-full">
@@ -276,7 +276,7 @@ export default function TaskDetails({ task }: { task: TTask }) {
                       </div>
                     </div>
                     {/* task actions */}
-                    <div className="flex w-full gap-5 justify-end mt-20 border-2 border-red-500">
+                    <div className="flex w-full gap-5 justify-end mt-20 ">
                       <ConfirmDeleteModal
                         onConfirm={() => handleDeleteTask(task._id)}
                       />
