@@ -72,7 +72,8 @@ export default function AllTask({
   const router = useRouter();
   const form = useForm({
     defaultValues: {
-      condition: "",
+      status: "",
+      category: "",
     },
   });
 
@@ -201,7 +202,7 @@ export default function AllTask({
                   <div>
                     <FormField
                       control={form.control}
-                      name="condition"
+                      name="category"
                       render={({ field }) => (
                         <FormItem>
                           <Select
@@ -234,7 +235,7 @@ export default function AllTask({
                   <div>
                     <FormField
                       control={form.control}
-                      name="condition"
+                      name="status"
                       render={({ field }) => (
                         <FormItem>
                           <Select
